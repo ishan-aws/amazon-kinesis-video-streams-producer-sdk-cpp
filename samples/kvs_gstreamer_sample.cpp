@@ -403,9 +403,11 @@ static GstFlowReturn on_new_sample(GstElement *sink, CustomData *data) {
         }
         if (CHECK_FRAME_FLAG_KEY_FRAME(kinesis_video_flags)) {
             data->kinesis_video_stream->putEventMetadata(STREAM_EVENT_TYPE_NOTIFICATION | STREAM_EVENT_TYPE_IMAGE_GENERATION, NULL);
-            LOG_DEBUG("Tagging fragment STREAM_EVENT_TYPE_IMAGE_GENERATION");
+            LOG_DEBUG("Hmm... Tagging fragment STREAM_EVENT_TYPE_IMAGE_GENERATION");
         } else {
             LOG_DEBUG("Not-Tagging fragment STREAM_EVENT_TYPE_IMAGE_GENERATION");
+            LOG_DEBUG("Doing it anyway: STREAM_EVENT_TYPE_IMAGE_GENERATION");
+            data->kinesis_video_stream->putEventMetadata(STREAM_EVENT_TYPE_NOTIFICATION | STREAM_EVENT_TYPE_IMAGE_GENERATION, NULL);
         }
 
         put_frame(data->kinesis_video_stream, info.data, info.size, std::chrono::nanoseconds(buffer->pts),
